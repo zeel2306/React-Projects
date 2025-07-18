@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 /* Reset & font */
 * {
   padding: 0;
@@ -21,12 +22,41 @@ body {
   color: white;
 }
 
+
 /* Container */
 .container {
   width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+
+}
+.centered-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* full screen height */
+  /* match theme */
+  font-family: 'Poppins', sans-serif;
+}
+
+.email_form input {
+  padding: 10px 14px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 300px;
+}
+
+.get_started_btn {
+  background-color: #00b894;
+  color: #fff;
+  padding: 10px 20px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
 }
 
 /* Navbar */
@@ -97,6 +127,17 @@ nav {
   line-height: 1.2;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
 }
+.login_form {
+  display: flex;
+  flex-direction: column; /* Stack vertically */
+  gap: 15px; /* Spacing between fields */
+  align-items: center; /* Center horizontally */
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  border-radius: 12px;
+  backdrop-filter: blur(5px);
+}
+
 
 .green-text {
   color: #00c853;
@@ -113,11 +154,13 @@ nav {
 
 /* Email Form */
 .email_form {
+  
   display: flex;
   justify-content: center;
   margin-top: 20px;
   gap: 10px;
   flex-wrap: wrap;
+  text-align: center;
 }
 
 .email_input {
@@ -132,6 +175,7 @@ nav {
 
 .get_started_btn {
   padding: 10px 20px;
+  
   font-size: 16px;
   background-color: #00e676;
   color: #000;
@@ -145,6 +189,15 @@ nav {
 .get_started_btn:hover {
   background-color: #00c853;
 }
+.section-content {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  color: white;
+  font-size: 18px;
+}
+
 
 /* User form */
 .user_form {
@@ -216,3 +269,25 @@ nav {
     width: 100%;
   }
 }
+
+.admin-dashboard {
+  color: white;
+  padding: 30px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  margin: 20px;
+}
+
+table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+th, td {
+  border: 1px solid white;
+  padding: 10px;
+  text-align: left;
+}
+

@@ -1,13 +1,35 @@
-import { useState } from 'react';
-import * as XLSX from 'xlsx';
+import React, { useState } from 'react';
 import './App.css';
+import LoginPage from './Loginpage';
+import AdminDashboard from './AdminDashboard';
+
 
 function App() {
-    const registeredEmails=[
-    'zeelprakashpatel03@gmail.com',
-    'pkpatelsolvay@gmail.com',
-    'varshaprakashpatel@gmail.com'
-  ]
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState({ email: '', password: '' });
+  const [selectedSection, setSelectedSection] = useState('browse');
+  const [isAdmin, setIsAdmin] = useState(false);
+
+
+
+
+ const handleLogin = (email, password) => {
+  setUserInfo({ email, password });
+
+  // Simple check: if admin, show admin view
+  if (email === 'admin@gmail.com' && password === 'password') {
+    setIsAdmin(true);         // Track if admin
+    setLoggedIn(true);        // Mark as logged in
+    setSelectedSection('admin');
+  } else {
+    // Let regular users log in too (for demo, no password check)
+    setIsAdmin(false);        // Regular user
+    setLoggedIn(true);
+    setSelectedSection('browse');
+  }
+};
+
+
   const [showForm, setShowForm] = useState(false);
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -22,19 +44,20 @@ function App() {
     currentCtc: '',
     expectedCtc: '',
     experience: '',
-    workplatform: '',  
+    workplatform: '',
   });
 
-   const handleGetStarted = () => {
-    if (!email.trim()) {
-      setEmailError('Email address is required');
-    } else if (!registeredEmails.includes(email.trim().toLowerCase())) {
-      setEmailError('Your email ID is not valid or registered');
-    } else {
-      setEmailError('');
-      setShowForm(true);
-    }
-  };
+  const registeredEmails = ['user@gmail.com', 'test@gmail.com'];
+
+const handleGetStarted = () => {
+  if (!email.trim()) {
+    setEmailError('Email address is required');
+  } else {
+    setEmailError('');
+    setShowForm(true);
+  }
+};
+
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -47,44 +70,86 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const dataToExport = [{ Email: email, ...formData }];
-    const worksheet = XLSX.utils.json_to_sheet(dataToExport);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "User Data");
-    XLSX.writeFile(workbook, "user_data.xlsx"); // 📥 still downloading to client
-
-    alert("Form submitted and data saved to Excel!");
-
-    // Reset form
-    setEmail('');
-    setFormData({
-      userName: '',
-      mobile: '',
-      city: '',
-      education: '',
-      year: '',
-      cgpa: '',
-      currentCtc: '',
-      expectedCtc: '',
-      experience: '',
-      workplatform: '', // ✅ fixed here too
-    });
-    setShowForm(false);
+    fetch('http://localhost:5000/api/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        ...formData
+      }),
+    })
+      .then(res => {
+        if (res.ok) {
+          alert('✅ Form submitted and data saved to MongoDB!');
+          setEmail('');
+          setFormData({
+            userName: '',
+            mobile: '',
+            city: '',
+            education: '',
+            year: '',
+            cgpa: '',
+            currentCtc: '',
+            expectedCtc: '',
+            experience: '',
+            workplatform: '',
+          });
+          setShowForm(false);
+        } else {
+          alert('❌ Something went wrong!');
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert('❌ Server error');
+      });
   };
 
+  // Show login first
+if (!loggedIn) {
   return (
+    <div className="container">
+      <div className="content">
+        <div className="hero_text">
+          <LoginPage onLogin={handleLogin} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+if (loggedIn && userInfo.email === 'admin@gmail.com') {
+  return <AdminDashboard />;
+}
+
+  // Main app after login
+  return (
+    
     <div className="container">
       <nav>
         <div className="container_logo">MyLogo</div>
         <div className="menu_list">
           <ul>
-            <li><a href="#">Products</a></li>
-            <li><a href="#">Solutions</a></li>
-            <li><a href="#">Pricing</a></li>
-            <li><a href="#">Contact</a></li>
-          </ul>
+  <li><button onClick={() => setSelectedSection('browse')}>Browse</button></li>
+  <li><button onClick={() => setSelectedSection('post')}>Post a Job</button></li>
+  <li><button onClick={() => setSelectedSection('advice')}>Career Advice</button></li>
+  <li><button onClick={() => setSelectedSection('contact')}>Contact Us</button></li>
+  {userInfo.email === 'admin@gmail.com' && (
+    <li><button onClick={() => setSelectedSection('admin')}>Admin</button></li>
+  )}
+</ul>
+
         </div>
       </nav>
+      <div className="section-content">
+  {selectedSection === 'browse' && <p>🔍 Here are job listings you can browse...</p>}
+  {selectedSection === 'post' && <p>📝 Post a new job here...</p>}
+  {selectedSection === 'advice' && <p>💡 Tips and career advice for job seekers...</p>}
+  {selectedSection === 'contact' && <p>📞 Contact us at support@example.com</p>}
+</div>
+
 
       <div className="content">
         <div className="hero_text">
@@ -94,17 +159,43 @@ function App() {
           <p className="subheading">Join thousands finding remote work opportunities worldwide.</p>
 
           {!showForm ? (
-            <div className="email_form">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="email_input"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <button className="get_started_btn" onClick={handleGetStarted}>Get Started</button>
-              {emailError && <p style={{ color: 'red', marginTop: '10px' }}>{emailError}</p>}
-            </div>
+            <>
+              <div className="email_form">
+                <input
+                  type="email"
+                  placeholder="Enter your Register email"
+                  className="email_input"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <button className="get_started_btn" onClick={handleGetStarted}>Get Started</button>
+                {emailError && <p style={{ color: 'red', marginTop: '10px' }}>{emailError}</p>}
+              </div>
+
+              {selectedSection === 'contact' && (
+                <div className="section-content">
+                  <h2>📞 Contact Us</h2>
+                  <p>Email: support@example.com</p>
+                  <p>Phone: +91 12345 67890</p>
+                  <p>Address: 123 Tech Park, Ahmedabad, India</p>
+                  <p>Working Hours: Mon - Fri, 9AM - 6PM</p>
+                </div>
+              )}
+              {selectedSection === 'post' && (
+                <>
+                  <h2>📝 Post a Job</h2>
+                  <p>Want to hire? Post a job to reach top talent instantly.</p>
+                  <p>Fill out job details, requirements, and salary range easily.</p>
+                </>
+              )}
+              {selectedSection === 'advice' && (
+                <>
+                  <h2>💡 Career Advice</h2>
+                  <p>Get expert tips on resumes, interviews, and career growth.</p>
+                  <p>Boost your job search strategy with professional insights.</p>
+                </>
+              )}
+            </>
           ) : (
             <div className="user_form">
               <h2>Fill Your Details</h2>
@@ -119,7 +210,7 @@ function App() {
                 <input type="text" name="expectedCtc" value={formData.expectedCtc} onChange={handleFormChange} placeholder="Expected CTC" required />
                 <input type="text" name="experience" value={formData.experience} onChange={handleFormChange} placeholder="Experience" required />
                 <input type="text" name="workplatform" value={formData.workplatform} onChange={handleFormChange} placeholder="Work Platform" required />
-                <button type="submit" className="submit_btn">Submit & Download</button>
+                <button type="submit" className="submit_btn">Submit</button>
               </form>
             </div>
           )}
