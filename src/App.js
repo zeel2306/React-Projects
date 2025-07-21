@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import LoginPage from './Loginpage';
 import AdminDashboard from './AdminDashboard';
+import Home from './Home';
+
+
 
 
 function App() {
@@ -9,7 +12,16 @@ function App() {
   const [userInfo, setUserInfo] = useState({ email: '', password: '' });
   const [selectedSection, setSelectedSection] = useState('browse');
   const [isAdmin, setIsAdmin] = useState(false);
+  const [jobs, setJobs] = useState([]);
 
+  useEffect(() => {
+  if (selectedSection === 'browse') {
+    fetch('http://localhost:5000/api/jobs')
+      .then(res => res.json())
+      .then(data => setJobs(data))
+      .catch(err => console.error('Failed to fetch jobs:', err));
+  }
+}, [selectedSection]);
 
 
 
@@ -128,11 +140,11 @@ if (loggedIn && userInfo.email === 'admin@gmail.com') {
   return (
     
     <div className="container">
-      <nav>
+      <nav >
         <div className="container_logo">MyLogo</div>
         <div className="menu_list">
           <ul>
-  <li><button onClick={() => setSelectedSection('browse')}>Browse</button></li>
+  <li><button onClick={() => setSelectedSection('browse')}>Current opening</button></li>
   <li><button onClick={() => setSelectedSection('post')}>Post a Job</button></li>
   <li><button onClick={() => setSelectedSection('advice')}>Career Advice</button></li>
   <li><button onClick={() => setSelectedSection('contact')}>Contact Us</button></li>
@@ -142,9 +154,27 @@ if (loggedIn && userInfo.email === 'admin@gmail.com') {
 </ul>
 
         </div>
+       
       </nav>
       <div className="section-content">
-  {selectedSection === 'browse' && <p>🔍 Here are job listings you can browse...</p>}
+  {selectedSection === 'browse' && (
+  <div className="job-listings">
+    <h2>🔍 Available Jobs</h2>
+    {jobs.length === 0 ? (
+      <p>No jobs found.</p>
+    ) : (
+      jobs.map((job) => (
+        <div key={job.id} className="job-card">
+          <h3>{job.title}</h3>
+          <p><strong>Company:</strong> {job.company}</p>
+          <p><strong>Location:</strong> {job.location}</p>
+          <button className="apply_btn">Apply Now</button>
+        </div>
+      ))
+    )}
+  </div>
+)}
+
   {selectedSection === 'post' && <p>📝 Post a new job here...</p>}
   {selectedSection === 'advice' && <p>💡 Tips and career advice for job seekers...</p>}
   {selectedSection === 'contact' && <p>📞 Contact us at support@example.com</p>}

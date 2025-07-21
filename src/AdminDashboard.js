@@ -30,7 +30,7 @@ function AdminDashboard() {
     fetchJobs(); // Refresh list
   };
 
- const handleDelete = async (id) => {
+  const handleDelete = async (id) => {
   const confirmDelete = window.confirm('Are you sure you want to delete this job?');
   if (!confirmDelete) return;
 
@@ -39,18 +39,20 @@ function AdminDashboard() {
       method: 'DELETE',
     });
 
-    if (res.ok) {
-      alert('Deleted successfully');
-      fetchJobs(); // reload data
-    } else {
-      alert('Failed to delete job');
+    const data = await res.json();
+    if (!res.ok) {
+      console.error('❌ Delete failed:', data);
+      return alert('Delete failed: ' + data.message);
     }
-  } catch (error) {
-    console.error('Error deleting job:', error);
-    alert('Server error');
+
+    alert('✅ Job deleted');
+    fetchJobs();
+  } catch (err) {
+    console.error('❌ Network/server error:', err);
+    alert('Server error while deleting job');
   }
 };
-;
+
 
   return (
     <div className="admin-dashboard">

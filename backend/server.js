@@ -11,6 +11,17 @@ const PORT = 5000;
 app.use(cors());
 app.use(express.json());
 
+
+// job listed
+app.get('/api/jobs', (req, res) => {
+  res.json([
+    { id: 1, title: "Frontend Developer", company: "TechCorp", location: "Remote" },
+    { id: 2, title: "Backend Engineer", company: "DevHouse", location: "Ahmedabad" },
+    { id: 3, title: "UI/UX Designer", company: "DesignIt", location: "Mumbai" },
+    { id: 4, title: "Data Engineer" ,company:"ufdtech", location:"pune"},
+  ]);
+});
+
 // Connect to MongoDB
 mongoose.connect('mongodb://127.0.0.1:27017/jobform', {
   useNewUrlParser: true,
@@ -32,16 +43,20 @@ app.post('/api/submit', async (req, res) => {
 });
 
 // DELETE a job by ID
+
 app.delete('/api/delete-job/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    await Job.findByIdAndDelete(id);  // Make sure Job model is imported
+    await FormData.findByIdAndDelete(id); // ✅ Use correct model
     res.json({ message: 'Job deleted successfully' });
   } catch (error) {
-    console.error('Error deleting job:', error);
+    console.error('❌ Error deleting job:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
+
+
+
 
 app.get('/api/data', async (req, res) => {
   try {
@@ -53,16 +68,30 @@ app.get('/api/data', async (req, res) => {
   }
 });
 const handleDelete = async (id) => {
-  if (window.confirm('Are you sure you want to delete this job?')) {
-    await fetch(`http://localhost:5000/api/delete-job/${id}`, {
+  const confirmDelete = window.confirm('Are you sure you want to delete this job?');
+  if (!confirmDelete) return;
+
+  try {
+    console.log('🗑️ Sending delete request for ID:', id);
+
+    const res = await fetch(`http://localhost:5000/api/delete-job/${id}`, {
       method: 'DELETE',
     });
-    fetchJobs(); // refresh the list
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      console.error('❌ Delete failed:', data);
+      return alert('Delete failed: ' + data.message);
+    }
+
+    alert('✅ Job deleted');
+    fetchJobs();
+  } catch (err) {
+    console.error('❌ Network/server error:', err);
+    alert('Server error while deleting job');
   }
 };
-
-
-
 
 // Start the server
 app.listen(PORT, () => {
