@@ -11,7 +11,8 @@ const formSchema = new mongoose.Schema({
   currentCtc: String,
   expectedCtc: String,
   experience: String,
-  workplatform: String
+  workplatform: String,
+  approved: { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model('FormData', formSchema);

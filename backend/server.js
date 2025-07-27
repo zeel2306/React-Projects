@@ -67,31 +67,45 @@ app.get('/api/data', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
-const handleDelete = async (id) => {
-  const confirmDelete = window.confirm('Are you sure you want to delete this job?');
-  if (!confirmDelete) return;
 
+// PATCH route to approve/reject a job by ID
+app.patch('/api/approve-job/:id', async (req, res) => {
   try {
-    console.log('🗑️ Sending delete request for ID:', id);
-
-    const res = await fetch(`http://localhost:5000/api/delete-job/${id}`, {
-      method: 'DELETE',
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      console.error('❌ Delete failed:', data);
-      return alert('Delete failed: ' + data.message);
+    const { id } = req.params;
+    const { approved } = req.body;
+    
+    console.log('🔍 Approving job with ID:', id, 'Status:', approved);
+    
+    const updatedJob = await FormData.findByIdAndUpdate(
+      id, 
+      { approved: approved },
+      { new: true }
+    );
+    
+    if (!updatedJob) {
+      console.log('❌ Job not found with ID:', id);
+      return res.status(404).json({ message: 'Job not found' });
     }
-
-    alert('✅ Job deleted');
-    fetchJobs();
-  } catch (err) {
-    console.error('❌ Network/server error:', err);
-    alert('Server error while deleting job');
+    
+    console.log('✅ Job updated successfully:', updatedJob._id);
+    res.json({ message: 'Job approval status updated successfully', job: updatedJob });
+  } catch (error) {
+    console.error('❌ Error updating job approval:', error);
+    res.status(500).json({ message: 'Server error: ' + error.message });
   }
-};
+});
+
+// GET route for stats
+app.get('/api/stats', async (req, res) => {
+  try {
+    const totalJobs = await FormData.countDocuments();
+    const totalUsers = await FormData.countDocuments(); // Assuming one job per user for now
+    res.json({ users: totalUsers, jobs: totalJobs });
+  } catch (error) {
+    console.error('❌ Error fetching stats:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
 
 // Start the server
 app.listen(PORT, () => {

@@ -4,8 +4,26 @@ import LoginPage from './Loginpage';
 import AdminDashboard from './AdminDashboard';
 import Home from './Home';
 
+const formFields = [
+  { name: 'userName', placeholder: 'Full Name' },
+  { name: 'mobile', placeholder: 'Mobile Number' },
+  { name: 'city', placeholder: 'City' },
+  { name: 'education', placeholder: 'Education' },
+  { name: 'year', placeholder: 'Passing Year' },
+  { name: 'cgpa', placeholder: 'CGPA or Percentage' },
+  { name: 'currentCtc', placeholder: 'Current CTC' },
+  { name: 'expectedCtc', placeholder: 'Expected CTC' },
+  { name: 'experience', placeholder: 'Experience' },
+  { name: 'workplatform', placeholder: 'Work Platform' },
+];
 
-
+const SECTIONS = {
+  browse: 'Current opening',
+  post: 'Post a Job',
+  advice: 'Career Advice',
+  contact: 'Contact Us',
+  admin: 'Admin',
+};
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -14,62 +32,44 @@ function App() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [jobs, setJobs] = useState([]);
 
-  useEffect(() => {
-  if (selectedSection === 'browse') {
-    fetch('http://localhost:5000/api/jobs')
-      .then(res => res.json())
-      .then(data => setJobs(data))
-      .catch(err => console.error('Failed to fetch jobs:', err));
-  }
-}, [selectedSection]);
-
-
-
- const handleLogin = (email, password) => {
-  setUserInfo({ email, password });
-
-  // Simple check: if admin, show admin view
-  if (email === 'admin@gmail.com' && password === 'password') {
-    setIsAdmin(true);         // Track if admin
-    setLoggedIn(true);        // Mark as logged in
-    setSelectedSection('admin');
-  } else {
-    // Let regular users log in too (for demo, no password check)
-    setIsAdmin(false);        // Regular user
-    setLoggedIn(true);
-    setSelectedSection('browse');
-  }
-};
-
-
   const [showForm, setShowForm] = useState(false);
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [formData, setFormData] = useState(
+    formFields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {})
+  );
 
-  const [formData, setFormData] = useState({
-    userName: '',
-    mobile: '',
-    city: '',
-    education: '',
-    year: '',
-    cgpa: '',
-    currentCtc: '',
-    expectedCtc: '',
-    experience: '',
-    workplatform: '',
-  });
+  useEffect(() => {
+    if (selectedSection === 'browse') {
+      fetch('http://localhost:5000/api/jobs')
+        .then(res => res.json())
+        .then(data => setJobs(data))
+        .catch(err => console.error('Failed to fetch jobs:', err));
+    }
+  }, [selectedSection]);
 
-  const registeredEmails = ['user@gmail.com', 'test@gmail.com'];
+  const handleLogin = (email, password) => {
+    setUserInfo({ email, password });
 
-const handleGetStarted = () => {
-  if (!email.trim()) {
-    setEmailError('Email address is required');
-  } else {
-    setEmailError('');
-    setShowForm(true);
-  }
-};
+    if (email === 'admin@gmail.com' && password === 'password') {
+      setIsAdmin(true);
+      setLoggedIn(true);
+      setSelectedSection('admin');
+    } else {
+      setIsAdmin(false);
+      setLoggedIn(true);
+      setSelectedSection('browse');
+    }
+  };
 
+  const handleGetStarted = () => {
+    if (!email.trim()) {
+      setEmailError('Email address is required');
+    } else {
+      setEmailError('');
+      setShowForm(true);
+    }
+  };
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -81,33 +81,16 @@ const handleGetStarted = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     fetch('http://localhost:5000/api/submit', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: email,
-        ...formData
-      }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, ...formData }),
     })
       .then(res => {
         if (res.ok) {
           alert('✅ Form submitted and data saved to MongoDB!');
           setEmail('');
-          setFormData({
-            userName: '',
-            mobile: '',
-            city: '',
-            education: '',
-            year: '',
-            cgpa: '',
-            currentCtc: '',
-            expectedCtc: '',
-            experience: '',
-            workplatform: '',
-          });
+          setFormData(formFields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {}));
           setShowForm(false);
         } else {
           alert('❌ Something went wrong!');
@@ -119,67 +102,80 @@ const handleGetStarted = () => {
       });
   };
 
-  // Show login first
-if (!loggedIn) {
-  return (
-    <div className="container">
-      <div className="content">
-        <div className="hero_text">
-          <LoginPage onLogin={handleLogin} />
+  if (!loggedIn) {
+    return (
+      <div className="container">
+        <div className="content">
+          <div className="hero_text">
+            <LoginPage onLogin={handleLogin} />
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
-if (loggedIn && userInfo.email === 'admin@gmail.com') {
-  return <AdminDashboard />;
-}
+  if (loggedIn && isAdmin) {
+    return <AdminDashboard />;
+  }
 
-  // Main app after login
   return (
-    
     <div className="container">
-      <nav >
+      <nav>
         <div className="container_logo">MyLogo</div>
         <div className="menu_list">
           <ul>
-  <li><button onClick={() => setSelectedSection('browse')}>Current opening</button></li>
-  <li><button onClick={() => setSelectedSection('post')}>Post a Job</button></li>
-  <li><button onClick={() => setSelectedSection('advice')}>Career Advice</button></li>
-  <li><button onClick={() => setSelectedSection('contact')}>Contact Us</button></li>
-  {userInfo.email === 'admin@gmail.com' && (
-    <li><button onClick={() => setSelectedSection('admin')}>Admin</button></li>
-  )}
-</ul>
-
+            {Object.entries(SECTIONS).map(([key, label]) =>
+              key === 'admin' && !isAdmin ? null : (
+                <li key={key}>
+                  <button onClick={() => setSelectedSection(key)}>{label}</button>
+                </li>
+              )
+            )}
+          </ul>
         </div>
-       
       </nav>
+
       <div className="section-content">
-  {selectedSection === 'browse' && (
-  <div className="job-listings">
-    <h2>🔍 Available Jobs</h2>
-    {jobs.length === 0 ? (
-      <p>No jobs found.</p>
-    ) : (
-      jobs.map((job) => (
-        <div key={job.id} className="job-card">
-          <h3>{job.title}</h3>
-          <p><strong>Company:</strong> {job.company}</p>
-          <p><strong>Location:</strong> {job.location}</p>
-          <button className="apply_btn">Apply Now</button>
-        </div>
-      ))
-    )}
-  </div>
-)}
+        {selectedSection === 'browse' && (
+          <div className="job-listings">
+            <h2>🔍 Available Jobs</h2>
+            {jobs.length === 0 ? (
+              <p>No jobs found.</p>
+            ) : (
+              jobs.map((job) => (
+                <div key={job.id} className="job-card">
+                  <h3>{job.title}</h3>
+                  <p><strong>Company:</strong> {job.company}</p>
+                  <p><strong>Location:</strong> {job.location}</p>
+                  <button className="apply_btn">Apply Now</button>
+                </div>
+              ))
+            )}
+          </div>
+        )}
 
-  {selectedSection === 'post' && <p>📝 Post a new job here...</p>}
-  {selectedSection === 'advice' && <p>💡 Tips and career advice for job seekers...</p>}
-  {selectedSection === 'contact' && <p>📞 Contact us at support@example.com</p>}
-</div>
-
+        {selectedSection === 'post' && (
+          <div>
+            <h2>📝 Post a Job</h2>
+            <p>Want to hire? Post a job to reach top talent instantly.</p>
+          </div>
+        )}
+        {selectedSection === 'advice' && (
+          <div>
+            <h2>💡 Career Advice</h2>
+            <p>Get expert tips on resumes, interviews, and career growth.</p>
+          </div>
+        )}
+        {selectedSection === 'contact' && (
+          <div>
+            <h2>📞 Contact Us</h2>
+            <p>Email: support@example.com</p>
+            <p>Phone: +91 12345 67890</p>
+            <p>Address: 123 Tech Park, Ahmedabad, India</p>
+            <p>Hours: Mon - Fri, 9AM - 6PM</p>
+          </div>
+        )}
+      </div>
 
       <div className="content">
         <div className="hero_text">
@@ -189,57 +185,32 @@ if (loggedIn && userInfo.email === 'admin@gmail.com') {
           <p className="subheading">Join thousands finding remote work opportunities worldwide.</p>
 
           {!showForm ? (
-            <>
-              <div className="email_form">
-                <input
-                  type="email"
-                  placeholder="Enter your Register email"
-                  className="email_input"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <button className="get_started_btn" onClick={handleGetStarted}>Get Started</button>
-                {emailError && <p style={{ color: 'red', marginTop: '10px' }}>{emailError}</p>}
-              </div>
-
-              {selectedSection === 'contact' && (
-                <div className="section-content">
-                  <h2>📞 Contact Us</h2>
-                  <p>Email: support@example.com</p>
-                  <p>Phone: +91 12345 67890</p>
-                  <p>Address: 123 Tech Park, Ahmedabad, India</p>
-                  <p>Working Hours: Mon - Fri, 9AM - 6PM</p>
-                </div>
-              )}
-              {selectedSection === 'post' && (
-                <>
-                  <h2>📝 Post a Job</h2>
-                  <p>Want to hire? Post a job to reach top talent instantly.</p>
-                  <p>Fill out job details, requirements, and salary range easily.</p>
-                </>
-              )}
-              {selectedSection === 'advice' && (
-                <>
-                  <h2>💡 Career Advice</h2>
-                  <p>Get expert tips on resumes, interviews, and career growth.</p>
-                  <p>Boost your job search strategy with professional insights.</p>
-                </>
-              )}
-            </>
+            <div className="email_form">
+              <input
+                type="email"
+                placeholder="Enter your Registered Email"
+                className="email_input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <button className="get_started_btn" onClick={handleGetStarted}>Get Started</button>
+              {emailError && <p style={{ color: 'red' }}>{emailError}</p>}
+            </div>
           ) : (
             <div className="user_form">
               <h2>Fill Your Details</h2>
               <form onSubmit={handleSubmit}>
-                <input type="text" name="userName" value={formData.userName} onChange={handleFormChange} placeholder="Full Name" required />
-                <input type="text" name="mobile" value={formData.mobile} onChange={handleFormChange} placeholder="Mobile Number" required />
-                <input type="text" name="city" value={formData.city} onChange={handleFormChange} placeholder="City" required />
-                <input type="text" name="education" value={formData.education} onChange={handleFormChange} placeholder="Education" required />
-                <input type="text" name="year" value={formData.year} onChange={handleFormChange} placeholder="Passing Year" required />
-                <input type="text" name="cgpa" value={formData.cgpa} onChange={handleFormChange} placeholder="CGPA or Percentage" required />
-                <input type="text" name="currentCtc" value={formData.currentCtc} onChange={handleFormChange} placeholder="Current CTC" required />
-                <input type="text" name="expectedCtc" value={formData.expectedCtc} onChange={handleFormChange} placeholder="Expected CTC" required />
-                <input type="text" name="experience" value={formData.experience} onChange={handleFormChange} placeholder="Experience" required />
-                <input type="text" name="workplatform" value={formData.workplatform} onChange={handleFormChange} placeholder="Work Platform" required />
+                {formFields.map(field => (
+                  <input
+                    key={field.name}
+                    type="text"
+                    name={field.name}
+                    value={formData[field.name]}
+                    onChange={handleFormChange}
+                    placeholder={field.placeholder}
+                    required
+                  />
+                ))}
                 <button type="submit" className="submit_btn">Submit</button>
               </form>
             </div>

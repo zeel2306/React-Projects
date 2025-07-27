@@ -22,12 +22,25 @@ function AdminDashboard() {
   };
 
   const handleApproval = async (id, approved) => {
-    await fetch(`http://localhost:5000/api/approve-job/${id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ approved }),
-    });
-    fetchJobs(); // Refresh list
+    try {
+      const res = await fetch(`http://localhost:5000/api/approve-job/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ approved }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        console.error('❌ Approval failed:', data);
+        return alert('Approval failed: ' + data.message);
+      }
+
+      alert(approved ? '✅ Job approved successfully!' : '❌ Job rejected successfully!');
+      fetchJobs(); // Refresh list
+    } catch (err) {
+      console.error('❌ Network/server error:', err);
+      alert('Server error while updating job approval status');
+    }
   };
 
   const handleDelete = async (id) => {
@@ -79,11 +92,15 @@ function AdminDashboard() {
               <td>{job.mobile}</td>
               <td>{job.city}</td>
               <td>{job.approved ? '✅' : '❌'}</td>
-              <td>
-                <button onClick={() => handleApproval(job._id, true)}>Approve</button>{' '}
-                <button onClick={() => handleApproval(job._id, false)}>Reject</button>{' '}
-                <button onClick={() => handleDelete(job._id)}>🗑️ Delete</button>
-              </td>
+                 <td>
+  {!job.approved && (
+    <button onClick={() => handleApproval(job._id, true)}>✅ Approve</button>
+  )}
+  {job.approved && (
+    <button onClick={() => handleApproval(job._id, false)}>❌ Reject</button>
+  )}
+  <button onClick={() => handleDelete(job._id)}>🗑️ Delete</button>
+</td>
             </tr>
           ))}
         </tbody>
