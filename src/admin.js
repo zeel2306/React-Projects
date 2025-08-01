@@ -45,7 +45,7 @@ function AdminDashboard() {
             <th>Job Title</th>
             <th>Approved</th>
             <th>Actions</th>
-          </tr>
+          </tr> 
         </thead>
         <tbody>
           {jobs.map(job => (
