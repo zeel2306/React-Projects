@@ -1,0 +1,36 @@
+body.light {
+  background-color: white;
+  color: black;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark {
+  background-color: #121212;
+  color: white;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dark_mode {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.theme_icon {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.2s ease;
+}
+
+.theme_icon:hover {
+  transform: scale(1.1);
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
