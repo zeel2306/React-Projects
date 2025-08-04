@@ -1,0 +1,96 @@
+/* General Styles */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f2f5;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main Container */
+.container {
+  max-width: 800px;
+  margin: 50px auto;
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Headings */
+.heading {
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.para {
+  text-align: center;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+/* Layout */
+.container_middle {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+/* Right Section */
+.right {
+  flex: 1;
+  min-width: 280px;
+  margin-right: 20px;
+}
+
+.date {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* Buttons */
+.button_div {
+  margin-top: 20px;
+}
+
+.button-65 {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 6px;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-65:hover {
+  background-color: #45a049;
+}
+
+/* Left Section */
+.left {
+  flex: 1;
+  min-width: 280px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.container_middle_para {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.container_middle_para h1 {
+  margin: 0;
+  font-size: 28px;
+  color: #222;
+}
