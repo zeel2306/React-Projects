@@ -1,0 +1,75 @@
+/* Reset default margin and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+
+body {
+  
+  background: linear-gradient(135deg, #74ebd5 0%, #acb6e5 100%);
+  font-family: 'Poppins', sans-serif;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  width: 380px;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.container:hover {
+  transform: scale(1.03);
+}
+
+h2 {
+  margin-bottom: 15px;
+  color: #333;
+  font-weight: 600;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+input:focus, select:focus {
+  border-color: royalblue;
+  outline: none;
+}
+
+button {
+  padding: 12px 25px;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  transform: translateY(-2px);
+}
+
+h2:last-of-type {
+  margin-top: 25px;
+  font-size: 20px;
+  color: royalblue;
+}
