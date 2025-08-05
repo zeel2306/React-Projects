@@ -1,53 +1,89 @@
-import React from "react";
-import { Container, Card } from "react-bootstrap";
+// src/Components/TermsAndConditions.jsx
+import React from 'react';
+import { Container, Row, Col, Card } from 'react-bootstrap';
 
 export default function TermsAndConditions() {
   return (
-    <Container className="my-5">
-      <h2 className="text-center fw-bold text-primary mb-4">Terms & Conditions</h2>
-      <p className="text-center text-muted mb-5">
-        Please read these terms and conditions carefully before using Zeeshop.
-      </p>
+    <div style={{ minHeight: "100vh", backgroundColor: "#f8f9fa", padding: "50px 0" }}>
+      <Container>
+        <Row className="justify-content-center">
+          <Col lg={8}>
+            <div className="text-center mb-4">
+              <h2 className="fw-bold text-primary">Terms and Conditions</h2>
+              <p className="text-muted">Last updated: August 2025</p>
+            </div>
+            <Card className="shadow-sm">
+              <Card.Body className="p-4">
+                <section className="mb-4">
+                  <h4 className="text-primary mb-3">1. Introduction</h4>
+                  <p>
+                    Welcome to Zeeshop. By accessing our website, you agree to these terms and conditions. 
+                    Please read them carefully.
+                  </p>
+                </section>
 
-      <Card className="shadow-sm p-4">
-        <h4 className="text-primary">1. Acceptance of Terms</h4>
-        <p>
-          By accessing and using Zeeshop, you agree to comply with these Terms & Conditions.
-          If you do not agree, you should not use our services.
-        </p>
+                <section className="mb-4">
+                  <h4 className="text-primary mb-3">2. Use of Service</h4>
+                  <p>By using our service, you agree to:</p>
+                  <ul>
+                    <li>Provide accurate and complete information</li>
+                    <li>Use the service legally and responsibly</li>
+                    <li>Not violate any applicable laws or regulations</li>
+                  </ul>
+                </section>
 
-        <h4 className="text-primary mt-4">2. Use of Our Services</h4>
-        <p>
-          You agree to use our website and services only for lawful purposes. 
-          Any misuse or unauthorized use is strictly prohibited.
-        </p>
+                <section className="mb-4">
+                  <h4 className="text-primary mb-3">3. Account Registration</h4>
+                  <p>
+                    When you create an account with us, you must provide accurate and complete information. 
+                    You are responsible for maintaining the confidentiality of your account.
+                  </p>
+                </section>
 
-        <h4 className="text-primary mt-4">3. Orders & Payments</h4>
-        <p>
-          All orders placed are subject to availability and confirmation of the order price. 
-          Payment must be completed before the order is processed.
-        </p>
+                <section className="mb-4">
+                  <h4 className="text-primary mb-3">4. Products</h4>
+                  <p>
+                    All products are subject to availability. We reserve the right to discontinue any product at any time. 
+                    Prices are subject to change without notice.
+                  </p>
+                </section>
 
-        <h4 className="text-primary mt-4">4. Product Information</h4>
-        <p>
-          We strive to ensure all product details, descriptions, and prices are accurate. 
-          However, errors may occur, and we reserve the right to correct them.
-        </p>
+                <section className="mb-4">
+                  <h4 className="text-primary mb-3">5. Shipping & Delivery</h4>
+                  <p>
+                    Delivery times are estimates only. We are not responsible for delays beyond our control. 
+                    Risk of loss and title passes to you upon delivery.
+                  </p>
+                </section>
 
-        <h4 className="text-primary mt-4">5. Limitation of Liability</h4>
-        <p>
-          Zeeshop is not liable for any indirect or consequential damages arising from the use of our services.
-        </p>
+                <section className="mb-4">
+                  <h4 className="text-primary mb-3">6. Returns & Refunds</h4>
+                  <p>
+                    You may return most new, unopened items within 30 days of delivery for a full refund. 
+                    We'll pay the return shipping costs if the return is a result of our error.
+                  </p>
+                </section>
 
-        <h4 className="text-primary mt-4">6. Changes to Terms</h4>
-        <p>
-          We may revise these Terms & Conditions at any time. Continued use of our services means you accept the updated terms.
-        </p>
+                <section className="mb-4">
+                  <h4 className="text-primary mb-3">7. Privacy Policy</h4>
+                  <p>
+                    Your use of our service is also governed by our Privacy Policy. 
+                    Please review our Privacy Policy to understand our practices.
+                  </p>
+                </section>
 
-        <p className="mt-4">
-          If you have any questions, please contact us at <strong>support@zeeshop.com</strong>.
-        </p>
-      </Card>
-    </Container>
+                <section>
+                  <h4 className="text-primary mb-3">8. Contact Us</h4>
+                  <p>
+                    If you have any questions about these Terms and Conditions, please contact us at 
+                    <strong> support@zeeshop.com</strong>
+                  </p>
+                </section>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 }

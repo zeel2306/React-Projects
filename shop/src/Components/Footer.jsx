@@ -31,6 +31,16 @@ export default function AppFooter() {
             <ul className="list-unstyled m-0">
               <li><a href="/" className="text-dark text-decoration-none">Shop</a></li>
               <li><a href="/about" className="text-dark text-decoration-none">About Us</a></li>
+              <li><a href="/customer-care" className="text-dark text-decoration-none">Customer Care</a></li>
+            </ul>
+          </Col>
+
+          {/* Legal */}
+          <Col md={2} className="mb-3">
+            <h6 className="fw-bold">Legal</h6>
+            <ul className="list-unstyled m-0">
+              <li><a href="/privacy" className="text-dark text-decoration-none">Privacy Policy</a></li>
+              <li><a href="/terms-and-conditions" className="text-dark text-decoration-none">Terms & Conditions</a></li>
             </ul>
           </Col>
 
@@ -51,14 +61,7 @@ export default function AppFooter() {
             </ul>
           </Col>
 
-          {/* Legal */}
-          <Col md={2} className="mb-3">
-            <h6 className="fw-bold">Legal</h6>
-            <ul className="list-unstyled m-0">
-              <li><a href="/privacy" className="text-dark text-decoration-none">Privacy Policy</a></li>
-              <li><a href="/terms" className="text-dark text-decoration-none">Terms & Conditions</a></li>
-            </ul>
-          </Col>
+         
         </Row>
       </Container>
     </footer>

@@ -1,16 +1,25 @@
 import React, { useContext } from "react";
-import { Navbar, Nav, Container } from "react-bootstrap";
+import { Navbar, Nav, Container, Badge } from "react-bootstrap";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import { CartContext } from "./CartContext";
-import { Link } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function AppNavbar() {
   const { cartItems } = useContext(CartContext);
+  const { isLoggedIn, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/"); // redirect to home
+  };
 
   return (
-    <Navbar bg="light" className="shadow-sm" expand="lg">
-      <Container className="d-flex justify-content-between align-items-center">
-        <Navbar.Brand as={Link} to="/" className="fw-bold text-primary d-flex align-items-center">
+    <Navbar bg="light" expand="lg" className="shadow-sm py-3">
+      <Container>
+        {/* Logo */}
+        <Navbar.Brand href="/" className="fw-bold text-primary d-flex align-items-center">
           <img
             src="/zeeshop-logo.png"
             alt="Zeeshop Logo"
@@ -19,29 +28,37 @@ export default function AppNavbar() {
           Zeeshop
         </Navbar.Brand>
 
-        <Nav className="d-flex flex-row align-items-center justify-content-center flex-grow-1">
-          <Nav.Link as={Link} to="/" className="mx-3 fs-5">Home</Nav.Link>
-          <Nav.Link as={Link} to="/shop" className="mx-3 fs-5">Shop</Nav.Link>
-          <Nav.Link as={Link} to="/about" className="mx-3 fs-5">About</Nav.Link>
-          <Nav.Link as={Link} to="/customer-care" className="mx-3 fs-5">Customer Care</Nav.Link>
-        </Nav>
+        <Navbar.Toggle aria-controls="navbar-nav" />
+        <Navbar.Collapse id="navbar-nav">
+          {/* Center Menu */}
+          <Nav className="mx-auto">
+            <Nav.Link href="/" className="mx-3 fw-semibold">Home</Nav.Link>
+            <Nav.Link href="/shop" className="mx-3 fw-semibold">Shop</Nav.Link>
+            <Nav.Link href="/about" className="mx-3 fw-semibold">About</Nav.Link>
+            <Nav.Link href="/customer-care" className="mx-3 fw-semibold">Customer Care</Nav.Link>
+          </Nav>
 
-        <Nav className="d-flex flex-row align-items-center">
-          <Nav.Link as={Link} to="/login" className="me-3 d-flex align-items-center">
-            <FaUser size={22} className="me-1" /> Login
-          </Nav.Link>
-          <Nav.Link as={Link} to="/cart" className="position-relative">
-            <FaShoppingCart size={28} />
-            {cartItems.length > 0 && (
-              <span
-                className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                style={{ fontSize: "12px" }}
-              >
-                {cartItems.length}
-              </span>
+          {/* Right - Login/Logout & Cart */}
+          <Nav className="ms-auto d-flex align-items-center">
+            {!isLoggedIn ? (
+              <Nav.Link href="/login" className="me-3 d-flex align-items-center">
+                <FaUser size={22} className="me-1" /> Login
+              </Nav.Link>
+            ) : (
+              <Nav.Link onClick={handleLogout} className="me-3 d-flex align-items-center">
+                <FaUser size={22} className="me-1" /> Logout
+              </Nav.Link>
             )}
-          </Nav.Link>
-        </Nav>
+            <Nav.Link href="/cart" className="position-relative">
+              <FaShoppingCart size={24} />
+              {cartItems.length > 0 && (
+                <Badge bg="danger" pill className="position-absolute top-0 start-100 translate-middle">
+                  {cartItems.length}
+                </Badge>
+              )}
+            </Nav.Link>
+          </Nav>
+        </Navbar.Collapse>
       </Container>
     </Navbar>
   );

@@ -1,28 +1,16 @@
+// src/Components/Cart.jsx
 import React, { useContext } from "react";
-import { Container, Table, Button } from "react-bootstrap";
+import { Container, Table, Button, ButtonGroup } from "react-bootstrap";
 import { CartContext } from "./CartContext";
 
 export default function Cart() {
-  const { cartItems, setCartItems, removeFromCart } = useContext(CartContext);
+  const { cartItems, removeFromCart, updateQuantity, clearCart } = useContext(CartContext);
 
-  // Ensure price is numeric
-  const parsePrice = (price) => parseFloat(price.toString().replace("$", ""));
-
-  const calculateTotal = (item) => (parsePrice(item.price) * (item.qty || 1)).toFixed(2);
+  const calculateTotal = (item) => (item.price * (item.qty || 1)).toFixed(2);
   const calculateGrandTotal = () => {
     return cartItems
-      .reduce((sum, item) => sum + parsePrice(item.price) * (item.qty || 1), 0)
+      .reduce((sum, item) => sum + item.price * (item.qty || 1), 0)
       .toFixed(2);
-  };
-
-  // Properly update quantity using setCartItems
-  const updateQuantity = (id, change) => {
-    const updatedCart = cartItems.map((item) =>
-      item.id === id
-        ? { ...item, qty: Math.max((item.qty || 1) + change, 1) }
-        : item
-    );
-    setCartItems(updatedCart);
   };
 
   if (cartItems.length === 0) {
@@ -35,8 +23,13 @@ export default function Cart() {
 
   return (
     <Container className="py-5">
-      <h3 className="mb-4">Your Cart</h3>
-      <Table bordered striped>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h3 className="m-0">Your Cart</h3>
+        <Button variant="outline-danger" size="sm" onClick={clearCart}>
+          Clear Cart
+        </Button>
+      </div>
+      <Table bordered responsive>
         <thead>
           <tr>
             <th>Product</th>
@@ -49,32 +42,41 @@ export default function Cart() {
         <tbody>
           {cartItems.map((item) => (
             <tr key={item.id}>
-              <td>{item.title}</td>
-              <td>${parsePrice(item.price)}</td>
               <td>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => updateQuantity(item.id, -1)}
-                >
-                  -
-                </Button>
-                <span className="mx-2">{item.qty || 1}</span>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={() => updateQuantity(item.id, 1)}
-                >
-                  +
-                </Button>
+                <div className="d-flex align-items-center">
+                  {item.image && (
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      style={{ width: "50px", marginRight: "10px" }}
+                    />
+                  )}
+                  {item.title}
+                </div>
+              </td>
+              <td>${item.price}</td>
+              <td>
+                <ButtonGroup size="sm">
+                  <Button
+                    variant="outline-secondary"
+                    onClick={() => updateQuantity(item.id, (item.qty || 1) - 1)}
+                  >
+                    -
+                  </Button>
+                  <Button variant="outline-secondary" disabled>
+                    {item.qty || 1}
+                  </Button>
+                  <Button
+                    variant="outline-secondary"
+                    onClick={() => updateQuantity(item.id, (item.qty || 1) + 1)}
+                  >
+                    +
+                  </Button>
+                </ButtonGroup>
               </td>
               <td>${calculateTotal(item)}</td>
               <td>
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => removeFromCart(item.id)}
-                >
+                <Button variant="danger" size="sm" onClick={() => removeFromCart(item.id)}>
                   Remove
                 </Button>
               </td>
@@ -82,7 +84,12 @@ export default function Cart() {
           ))}
         </tbody>
       </Table>
-      <h4 className="text-end">Grand Total: ${calculateGrandTotal()}</h4>
+      <div className="text-end">
+        <h4>Grand Total: ${calculateGrandTotal()}</h4>
+        <Button variant="primary" className="mt-3">
+          Proceed to Checkout
+        </Button>
+      </div>
     </Container>
   );
 }
