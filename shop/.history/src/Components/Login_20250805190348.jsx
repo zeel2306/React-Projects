@@ -1,11 +1,10 @@
-// src/Components/Login.jsx
 import React, { useContext, useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { AuthContext } from "./AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Login() {
-  const { login } = useContext(AuthContext);
+  const { setIsLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const [email, setEmail] = useState("");
@@ -16,9 +15,8 @@ export default function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
     if (email && password) {
-      // Fake user data for now
-      login({ name: "Zeeshop User", email });
-      navigate(from);
+      setIsLoggedIn(true);
+      navigate(from); // Redirect back to previous page
     } else {
       alert("Please enter email and password");
     }
@@ -27,6 +25,7 @@ export default function Login() {
   return (
     <Container fluid className="vh-100 d-flex justify-content-center align-items-center bg-light">
       <Row className="shadow rounded overflow-hidden w-75" style={{ maxWidth: "900px" }}>
+        {/* Left side - Login Form */}
         <Col md={6} className="bg-white p-5">
           <h3 className="mb-3 text-center">Welcome Back</h3>
           <p className="text-center text-muted">Login to your Zeeshop account</p>
@@ -54,7 +53,12 @@ export default function Login() {
             </Button>
           </Form>
         </Col>
-        <Col md={6} className="d-flex justify-content-center align-items-center bg-dark">
+
+        {/* Right side - Only Logo */}
+        <Col
+          md={6}
+          className="d-flex justify-content-center align-items-center bg-dark"
+        >
           <img
             src="/zeeshop-high-resolution-logo.png"
             alt="Zeeshop Logo"

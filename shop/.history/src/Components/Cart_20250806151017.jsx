@@ -4,9 +4,9 @@ import { Container, Table, Button, ButtonGroup } from "react-bootstrap";
 import { CartContext } from "./CartContext";
 import { useNavigate } from "react-router-dom";
 
+
 export default function Cart() {
   const { cartItems, removeFromCart, updateQuantity, clearCart } = useContext(CartContext);
-  const navigate = useNavigate(); // <-- initialize navigation
 
   const calculateTotal = (item) => (item.price * (item.qty || 1)).toFixed(2);
   const calculateGrandTotal = () => {
@@ -88,11 +88,7 @@ export default function Cart() {
       </Table>
       <div className="text-end">
         <h4>Grand Total: ${calculateGrandTotal()}</h4>
-        <Button 
-          variant="primary" 
-          className="mt-3"
-          onClick={() => navigate("/billing")} // <-- navigate to billing
-        >
+        <Button variant="primary" className="mt-3">
           Proceed to Checkout
         </Button>
       </div>

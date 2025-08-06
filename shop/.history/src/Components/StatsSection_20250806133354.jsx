@@ -4,10 +4,10 @@ import { FaUsers, FaAward, FaCity, FaShippingFast } from "react-icons/fa";
 
 export default function StatsSection() {
   const stats = [
-    { id: 1, icon: <FaUsers size={40} color="blue" />, number: "5Lac+", text: "Happy Clients", color: "blue" },
-    { id: 2, icon: <FaAward size={40} color="blue" />, number: "10k+", text: "Fresh & Quality Products", color: "blue" },
-    { id: 3, icon: <FaCity size={40} color="blue" />, number: "200+", text: "Delivering Cities", color: "blue" },
-    { id: 4, icon: <FaShippingFast size={40} color="blue" />, number: "365 Days", text: "Express Delivery", color: "blue" },
+    { id: 1, icon: <FaUsers size={40} color="blue" />, number: "5Lac+", text: "Happy Clients", color: "#ff5733" },
+    { id: 2, icon: <FaAward size={40} color="blue" />, number: "10k+", text: "Fresh & Quality Products", color: "#008CBA" },
+    { id: 3, icon: <FaCity size={40} color="blue" />, number: "200+", text: "Delivering Cities", color: "#28a745" },
+    { id: 4, icon: <FaShippingFast size={40} color="blue" />, number: "365 Days", text: "Express Delivery", color: "#f39c12" },
   ];
 
   return (

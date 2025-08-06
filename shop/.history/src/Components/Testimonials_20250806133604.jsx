@@ -3,7 +3,7 @@ import React from "react";
 import Slider from "react-slick";
 import { Card } from "react-bootstrap";
 import { FaStar } from "react-icons/fa";
-import "slick-carousel/slick/slick.css";       
+import "slick-carousel/slick/slick.css";       // <-- Added
 import "slick-carousel/slick/slick-theme.css"; 
 
 const testimonials = [
@@ -50,7 +50,7 @@ export default function Testimonials() {
 
   return (
     <div className="my-5 container">
-      <h2 className="text-center mb-4" style={{color:"blue"}}>What Our Customers Say</h2>
+      <h2 className="text-center mb-4">What Our Customers Say</h2>
       <Slider {...settings}>
         {testimonials.map((t) => (
           <div key={t.id} className="p-3">

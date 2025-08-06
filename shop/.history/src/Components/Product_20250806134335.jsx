@@ -59,7 +59,7 @@ export default function Product() {
 
   return (
     <Container className="py-4">
-      <h2 className="text-center mb-4" style={{color:"blue"}}>
+      <h2 className="text-center mb-4" style={{}}>
         {location.pathname === "/" ? "Featured Products" : "All Products"}
       </h2>
       <Row xs={1} md={2} lg={location.pathname === "/" ? 3 : 4} className="g-4">

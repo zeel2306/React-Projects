@@ -7,7 +7,7 @@ import { AuthContext } from "./AuthContext";
 
 export default function AppNavbar() {
   const { cartItems } = useContext(CartContext);
-  const { isLoggedIn, user, logout } = useContext(AuthContext);
+  const { isLoggedIn, logout } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -37,21 +37,37 @@ export default function AppNavbar() {
           <div className="d-flex justify-content-between w-100 align-items-center">
             {/* Center: Nav Links */}
             <Nav className="mx-auto">
-              <Nav.Link as={NavLink} to="/" className="mx-3 fw-semibold">
+              <Nav.Link
+                as={NavLink}
+                to="/"
+                className="mx-3 fw-semibold"
+              >
                 Home
               </Nav.Link>
-              <Nav.Link as={NavLink} to="/shop" className="mx-3 fw-semibold">
+              <Nav.Link
+                as={NavLink}
+                to="/shop"
+                className="mx-3 fw-semibold"
+              >
                 Shop
               </Nav.Link>
-              <Nav.Link as={NavLink} to="/about" className="mx-3 fw-semibold">
+              <Nav.Link
+                as={NavLink}
+                to="/about"
+                className="mx-3 fw-semibold"
+              >
                 About
               </Nav.Link>
-              <Nav.Link as={NavLink} to="/customer-care" className="mx-3 fw-semibold">
+              <Nav.Link
+                as={NavLink}
+                to="/customer-care"
+                className="mx-3 fw-semibold"
+              >
                 Customer Care
               </Nav.Link>
             </Nav>
 
-            {/* Right: User & Cart */}
+            {/* Right: Login & Cart */}
             <Nav className="d-flex align-items-center">
               {!isLoggedIn ? (
                 <Nav.Link
@@ -62,23 +78,19 @@ export default function AppNavbar() {
                   <FaUser size={22} className="me-1" /> Login
                 </Nav.Link>
               ) : (
-                <>
-                  <Nav.Link
-                    disabled
-                    className="me-3 d-flex align-items-center text-success fw-semibold"
-                  >
-                    <FaUser size={22} className="me-1" /> Welcome, {user?.name || "User"}
-                  </Nav.Link>
-                  <Nav.Link
-                    onClick={handleLogout}
-                    className="me-3 fw-semibold text-danger"
-                  >
-                    Logout
-                  </Nav.Link>
-                </>
+                <Nav.Link
+                  onClick={handleLogout}
+                  className="me-3 d-flex align-items-center"
+                >
+                  <FaUser size={22} className="me-1" /> Logout
+                </Nav.Link>
               )}
 
-              <Nav.Link as={NavLink} to="/cart" className="position-relative">
+              <Nav.Link
+                as={NavLink}
+                to="/cart"
+                className="position-relative"
+              >
                 <FaShoppingCart size={24} />
                 {cartItems.length > 0 && (
                   <Badge
