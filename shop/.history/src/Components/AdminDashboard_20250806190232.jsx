@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function AdminDashboard() {
   const [orders, setOrders] = useState([]);
-  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null); // For popup
   const [showModal, setShowModal] = useState(false);
 
   // Fetch all orders
@@ -37,7 +37,7 @@ export default function AdminDashboard() {
     }
   };
 
-  // Open popup
+  // Open popup with cart items
   const viewItems = (order) => {
     setSelectedOrder(order);
     setShowModal(true);
@@ -96,7 +96,7 @@ export default function AdminDashboard() {
                   className="btn btn-primary btn-sm me-2"
                   onClick={() => viewItems(order)}
                 >
-                  View Details
+                  View Items
                 </button>
                 <button
                   className="btn btn-danger btn-sm"
@@ -117,29 +117,18 @@ export default function AdminDashboard() {
           tabIndex="-1"
           style={{ background: "rgba(0,0,0,0.5)" }}
         >
-          <div className="modal-dialog modal-lg">
+          <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Order Details</h5>
+                <h5 className="modal-title">Order Items</h5>
                 <button type="button" className="btn-close" onClick={closeModal}></button>
               </div>
               <div className="modal-body">
-                <h6>Customer Details</h6>
-                <p><strong>Name:</strong> {selectedOrder.name}</p>
-                <p><strong>Email:</strong> {selectedOrder.email}</p>
-                <p><strong>Phone:</strong> {selectedOrder.phone}</p>
-                <p><strong>Address:</strong> {selectedOrder.address}</p>
-                
-                <h6>Payment Info</h6>
-                <p><strong>Method:</strong> {selectedOrder.paymentMethod}</p>
-                <p><strong>Total:</strong> ${selectedOrder.total}</p>
-
-                <h6>Products</h6>
                 {selectedOrder.cart && selectedOrder.cart.length > 0 ? (
                   <ul className="list-group">
                     {selectedOrder.cart.map((item, idx) => (
                       <li key={idx} className="list-group-item">
-                        <strong>{item.name}</strong> - Qty: {item.quantity} - Price: ${item.price}
+                        <strong>{item.name}</strong> - Qty: {item.quantity} - ${item.price}
                       </li>
                     ))}
                   </ul>
