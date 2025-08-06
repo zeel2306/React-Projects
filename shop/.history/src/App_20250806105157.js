@@ -2,7 +2,7 @@
 import Footer from './Components/Footer';
 import Login from './Components/Login';
 import Navbar from './Components/Navbar';
-import Slider from './Components/Slider';
+import Slider from './Components/Slider';   // <-- Using your updated Slider
 import Product from './Components/Product';
 import About from './Components/About';
 import CustomerCare from './Components/Customercare';
@@ -10,7 +10,9 @@ import ProductDetails from './Components/ProductDetail';
 import PrivacyPolicy from './Components/PrivacyPolicy';
 import TermsAndConditions from './Components/TermsAndConditions';
 import StatsSection from "./Components/StatsSection";
-import Testimonials from "./Components/Testimonials";
+imoprt Testimonials from "./Components/Tes"
+
+
 import Cart from './Components/Cart';
 import WelcomePopup from "./Components/WelcomePopup";
 import Features from './Components/Features';
@@ -18,6 +20,7 @@ import { AuthProvider } from './Components/AuthContext';
 import { CartProvider } from './Components/CartContext';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import BrandSlider from './Components/BrandSlider';
+import Testimonials from './Components/Testimonials';
 
 function App() {
   return (
@@ -33,15 +36,15 @@ function App() {
                   element={
                     <>
                       <WelcomePopup />
-                      <Slider />
-                      <StatsSection />
-                      <Product />
-                      <Testimonials />
-                      <Features />
-                      <BrandSlider />
+                      <Slider /> 
+                     
+
+                      <Product /> 
+                      
                     </>
                   }
                 />
+                 <Route path="/" element={<><Slider /><StatsSection /><Product /></>} />
                 <Route path="/shop" element={<Product />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/cart" element={<Cart />} />
@@ -50,8 +53,13 @@ function App() {
                 <Route path="/privacy" element={<PrivacyPolicy />} />
                 <Route path="/product/:id" element={<ProductDetails />} />
                 <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+                
               </Routes>
             </main>
+            <Route path="/" element={<><Slider /><Product /><Testimonials /></>} />
+
+            <Features/>
+            <BrandSlider/>
             <Footer />
           </div>
         </Router>

@@ -15,9 +15,8 @@ export default function Product() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch products (reload when path changes)
+  // Fetch products
   useEffect(() => {
-    setLoading(true);
     axios
       .get("https://fakestoreapi.com/products")
       .then((res) => {
@@ -28,20 +27,17 @@ export default function Product() {
         console.error("Error fetching products:", err);
         setLoading(false);
       });
-  }, [location.pathname]); // reload when switching between Home & Shop
+  }, []);
 
   // Add to cart with login check
   const handleAddToCart = (product) => {
-    console.log("Current path:", location.pathname);
-    console.log("Is logged in:", isLoggedIn);
-
     if (!isLoggedIn) {
       alert("Please login first to add items to your cart.");
       navigate("/login");
-      return;
+    } else {
+      addToCart(product);
+      alert(`${product.title} added to cart!`);
     }
-    addToCart(product);
-    alert(`${product.title} added to cart!`);
   };
 
   if (loading) {
@@ -52,7 +48,7 @@ export default function Product() {
     );
   }
 
-  // Show only 6 products on home, all on shop
+  // Filter products based on current path
   const displayProducts = location.pathname === "/" 
     ? products.slice(0, 6) 
     : products;

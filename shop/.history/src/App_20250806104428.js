@@ -2,7 +2,7 @@
 import Footer from './Components/Footer';
 import Login from './Components/Login';
 import Navbar from './Components/Navbar';
-import Slider from './Components/Slider';
+import Slider from './Components/Slider';   // <-- Using your updated Slider
 import Product from './Components/Product';
 import About from './Components/About';
 import CustomerCare from './Components/Customercare';
@@ -10,7 +10,7 @@ import ProductDetails from './Components/ProductDetail';
 import PrivacyPolicy from './Components/PrivacyPolicy';
 import TermsAndConditions from './Components/TermsAndConditions';
 import StatsSection from "./Components/StatsSection";
-import Testimonials from "./Components/Testimonials";
+
 import Cart from './Components/Cart';
 import WelcomePopup from "./Components/WelcomePopup";
 import Features from './Components/Features';
@@ -33,12 +33,8 @@ function App() {
                   element={
                     <>
                       <WelcomePopup />
-                      <Slider />
-                      <StatsSection />
-                      <Product />
-                      <Testimonials />
-                      <Features />
-                      <BrandSlider />
+                      <Slider /> 
+                      <Product /> 
                     </>
                   }
                 />
@@ -52,6 +48,8 @@ function App() {
                 <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               </Routes>
             </main>
+            <Features/>
+            <BrandSlider/>
             <Footer />
           </div>
         </Router>

@@ -6,18 +6,13 @@ import Slider from './Components/Slider';
 import Product from './Components/Product';
 import About from './Components/About';
 import CustomerCare from './Components/Customercare';
-import ProductDetails from './Components/ProductDetail';
 import PrivacyPolicy from './Components/PrivacyPolicy';
-import TermsAndConditions from './Components/TermsAndConditions';
-import StatsSection from "./Components/StatsSection";
-import Testimonials from "./Components/Testimonials";
+import TermsAndConditions from "./Components/TermsAndConditions";
 import Cart from './Components/Cart';
-import WelcomePopup from "./Components/WelcomePopup";
-import Features from './Components/Features';
+import WelcomePopup from "./Components/WelcomePopup";  // <-- NEW
 import { AuthProvider } from './Components/AuthContext';
 import { CartProvider } from './Components/CartContext';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import BrandSlider from './Components/BrandSlider';
 
 function App() {
   return (
@@ -28,28 +23,14 @@ function App() {
             <Navbar />
             <main className="flex-grow-1 mb-4">
               <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <>
-                      <WelcomePopup />
-                      <Slider />
-                      <StatsSection />
-                      <Product />
-                      <Testimonials />
-                      <Features />
-                      <BrandSlider />
-                    </>
-                  }
-                />
+                <Route path="/" element={<><WelcomePopup /><Slider /><Product /></>} />
                 <Route path="/shop" element={<Product />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/customer-care" element={<CustomerCare />} />
                 <Route path="/privacy" element={<PrivacyPolicy />} />
-                <Route path="/product/:id" element={<ProductDetails />} />
-                <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+                <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
               </Routes>
             </main>
             <Footer />

@@ -2,18 +2,16 @@
 import Footer from './Components/Footer';
 import Login from './Components/Login';
 import Navbar from './Components/Navbar';
-import Slider from './Components/Slider';
+import Slider from './Components/Slider';   // <-- Using your updated Slider
 import Product from './Components/Product';
 import About from './Components/About';
 import CustomerCare from './Components/Customercare';
 import ProductDetails from './Components/ProductDetail';
 import PrivacyPolicy from './Components/PrivacyPolicy';
 import TermsAndConditions from './Components/TermsAndConditions';
-import StatsSection from "./Components/StatsSection";
-import Testimonials from "./Components/Testimonials";
 import Cart from './Components/Cart';
 import WelcomePopup from "./Components/WelcomePopup";
-import Features from './Components/Features';
+imp
 import { AuthProvider } from './Components/AuthContext';
 import { CartProvider } from './Components/CartContext';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -33,12 +31,8 @@ function App() {
                   element={
                     <>
                       <WelcomePopup />
-                      <Slider />
-                      <StatsSection />
-                      <Product />
-                      <Testimonials />
-                      <Features />
-                      <BrandSlider />
+                      <Slider />  {/* Your new auto-slider */}
+                      <Product /> {/* Optional: show few products on home */}
                     </>
                   }
                 />
@@ -52,6 +46,7 @@ function App() {
                 <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
               </Routes>
             </main>
+            <BrandSlider/>
             <Footer />
           </div>
         </Router>
