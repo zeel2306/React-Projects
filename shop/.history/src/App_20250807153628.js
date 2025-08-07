@@ -24,10 +24,11 @@ import { CartProvider } from './Components/CartContext';
 import { AdminAuthProvider } from './Components/AdminAuthContext';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import BrandSlider from './Components/BrandSlider';
+import OrderTracking from "./Components/OrderTracking";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-
+// ✅ Theme loading: Add theme class to body before app loads
 const savedTheme = localStorage.getItem("theme");
 if (savedTheme === "dark") {
   document.body.classList.add("bg-dark", "text-light");
@@ -68,10 +69,9 @@ function App() {
                   <Route path="/product/:id" element={<ProductDetails />} />
                   <Route path="/billing" element={<Billing />} />
                   <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
-                
-                  <Route path="/track-order" element={<OrderTracking />} />
+                  <Route path="/OrderTracking" element={<OrderTracking />} />
 
-                
+                  {/* Admin Routes */}
                   <Route path="/admin-login" element={<AdminLogin />} />
                   <Route path="/admin" element={<AdminDashboard />} />
                 </Routes>

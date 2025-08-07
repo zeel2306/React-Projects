@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { Navbar, Nav, Container, Badge } from "react-bootstrap";
-import { FaShoppingCart, FaUser, FaTruck } from "react-icons/fa";
+import { FaShoppingCart, FaUser } from "react-icons/fa";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { CartContext } from "./CartContext";
 import { AuthContext } from "./AuthContext";
-import ThemeToggle from "./ThemeToggle";
+import ThemeToggle from "./ThemeToggle"; // ✅ New import
 
 export default function AppNavbar() {
   const { cartItems } = useContext(CartContext);
@@ -54,13 +54,12 @@ export default function AppNavbar() {
               >
                 Customer Care
               </Nav.Link>
-
-              {/* ✅ Track Order Link */}
-              <Nav.Link as={NavLink} to="/track-order" className="mx-3 fw-semibold d-flex align-items-center">
-                <FaTruck className="me-1" /> Track Order
-              </Nav.Link>
             </Nav>
+                         
 
+                         <NavLink className="nav-link" to="/track-order">
+  Track Order
+</NavLink>
             {/* Right: User & Cart */}
             <Nav className="d-flex align-items-center">
               {!isLoggedIn ? (
@@ -102,7 +101,7 @@ export default function AppNavbar() {
                 )}
               </Nav.Link>
 
-              {/* Theme Toggle Button */}
+              {/* ✅ Theme Toggle Button */}
               <ThemeToggle />
             </Nav>
           </div>
