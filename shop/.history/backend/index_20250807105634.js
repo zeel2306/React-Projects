@@ -4,8 +4,6 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 const app = express();
-
-// Enable CORS for all origins (good for development)
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -25,7 +23,7 @@ const orderSchema = new mongoose.Schema({
   cart: Array,
   total: Number,
   date: String,
-  status: { type: String, default: "Pending" },
+  status: { type: String, default: "Pending" }, // NEW FIELD
 });
 
 const Order = mongoose.model("Order", orderSchema);
@@ -73,3 +71,7 @@ app.delete("/orders/:id", async (req, res) => {
 });
 
 app.listen(5000, () => console.log("Server running on http://localhost:5000"));
+
+
+
+// http://localhost:5000/orders

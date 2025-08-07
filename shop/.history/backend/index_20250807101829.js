@@ -7,12 +7,22 @@ const app = express();
 
 // Enable CORS for all origins (good for development)
 app.use(cors());
+app.use((req, res, next) => {
+  res.header("Access‑Control‑Allow‑Origin", "*");
+  res.header("Access‑Control‑Allow‑Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access‑Control‑Allow‑Headers", "Origin, X‑Requested‑With, Content‑Type, Accept");
+  next();
+});
+
 app.use(bodyParser.json());
 
-// MongoDB connection
-mongoose.connect("mongodb://localhost:27017/ordersDB");
+// Connect to MongoDB
+mongoose.connect("mongodb://localhost:27017/ordersDB", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
-// Order Schema
+// Define the Order schema & model
 const orderSchema = new mongoose.Schema({
   name: String,
   email: String,
@@ -27,7 +37,6 @@ const orderSchema = new mongoose.Schema({
   date: String,
   status: { type: String, default: "Pending" },
 });
-
 const Order = mongoose.model("Order", orderSchema);
 
 // Create new order
@@ -41,7 +50,7 @@ app.post("/orders", async (req, res) => {
   }
 });
 
-// Get all orders (sorted by latest)
+// Get all orders
 app.get("/orders", async (req, res) => {
   const orders = await Order.find().sort({ date: -1 });
   res.json(orders);
@@ -62,7 +71,7 @@ app.put("/orders/:id/status", async (req, res) => {
   }
 });
 
-// Delete order
+// Delete an order
 app.delete("/orders/:id", async (req, res) => {
   try {
     await Order.findByIdAndDelete(req.params.id);
@@ -72,4 +81,8 @@ app.delete("/orders/:id", async (req, res) => {
   }
 });
 
-app.listen(5000, () => console.log("Server running on http://localhost:5000"));
+const PORT = 5000;
+app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+
+
+

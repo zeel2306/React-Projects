@@ -10,21 +10,26 @@ export default function Billing() {
   const { cartItems, clearCart } = useContext(CartContext);
 
   const handleOrderSubmit = async (formData) => {
-    const newOrder = {
-      ...formData,
-      cart: cartItems,
-      total: cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
-      date: new Date().toLocaleString(),
-    };
+    try {
+      const newOrder = {
+        ...formData,
+        cart: cartItems,
+        total: cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
+        date: new Date().toLocaleString(),
+      };
 
-    await axios.post("http://localhost:5000/orders", newOrder);
+      await axios.post("http://localhost:5000/orders", newOrder);
 
-    clearCart();
-    setShowNotification(true);
+      clearCart();
+      setShowNotification(true);
 
-    setTimeout(() => {
-      navigate("/");
-    }, 2000);
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+    } catch (error) {
+      console.error("Error placing order:", error);
+      alert("Network error: Unable to place order. Please check if the server is running and try again.");
+    }
   };
 
   return (
